@@ -1,9 +1,11 @@
 <template>
   <v-navigation-drawer
+    app
     :value="value"
     @input="$emit('input', $event)"
     :mini-variant="mini"
-    absolute
+    class="mt-14 mt-md-16"
+    fixed
     temporary
   >
     <v-list>

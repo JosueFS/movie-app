@@ -40,7 +40,7 @@ export default {
   }),
   async created() {
     this.genres = await DiscoverService.getMoviesByGenre();
-    this.setTitle({ title: 'Filmes Recomendados' });
+    this.setTitle({ title: 'Descubra novos filmes' });
   },
   methods: {
     ...mapActions(['setTitle']),

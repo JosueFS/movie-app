@@ -3,7 +3,7 @@
     <v-app-bar-nav-icon @click.stop="$emit('hide', !show)"></v-app-bar-nav-icon>
     <v-toolbar-title>{{ title || 'Dashboard' }}</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-toolbar-title>
+    <v-toolbar-title class="d-none d-sm-block">
       <span class="title text-h5 mt-1">MOVUE</span>
       <span class="text-subtitle-2">Movie Reccomendations</span>
     </v-toolbar-title>
