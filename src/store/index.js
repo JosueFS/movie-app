@@ -32,8 +32,11 @@ export default new Vuex.Store({
     setTitle: ({ commit }, payload) => {
       commit('SET_TITLE', payload);
     },
-    setUser: ({ commit }, payload) => {
-      commit('SET_USER', payload);
+    setUser: ({ commit }, payload = {}) => {
+      const user =
+        payload || JSON.parse(window.localStorage.getItem(AUTH_CREDENTIALS));
+
+      commit('SET_USER', user);
     },
     // async setMovieBgUrl({ commit, dispatch, state }, payload) {
     //   try {

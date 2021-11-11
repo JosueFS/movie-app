@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height mt-12>
     <v-row justify="center">
-      <v-col xs12 sm6 md4>
+      <v-col xs="12" sm="6" md="4">
         <v-card class="elevation-12 ma-24">
           <v-toolbar class="elevation-0">
             <v-toolbar-title>{{ texts.toolbar }}</v-toolbar-title>
@@ -85,6 +85,7 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
 
 import { formatError } from '@/utils';
 
@@ -148,6 +149,7 @@ export default {
           ? await AuthService.login(this.user.email)
           : await AuthService.signup(this.user.email);
 
+        this.setUser();
         this.$router.push(this.$route.query.redirect || '/dashboard');
       } catch (error) {
         console.log(error);
@@ -157,6 +159,7 @@ export default {
         this.isLoading = false;
       }
     },
+    ...mapActions(['setUser']),
   },
 };
 </script>
