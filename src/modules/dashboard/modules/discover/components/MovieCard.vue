@@ -1,39 +1,20 @@
 <template>
-  <v-card class="event-card -shadow" :style="backgroundStyle">
-    <FavoriteIcon @click.native="updFavorites" :isFavorite="isFavorite" />
+  <v-card
+    class="event-card -shadow"
+    :style="backgroundStyle"
+    pointer
+    @click="toMovieDetails"
+  >
+    <!-- <FavoriteIcon @click.native="updFavorites" :isFavorite="isFavorite" /> -->
 
     <div>
       <h4 class="title ma-1">{{ movie.title }}</h4>
     </div>
 
-    <!-- <v-rating
-      length="10"
-      :value="movie.imdbRating"
-      color="amber"
-      background-color="grey darken-2"
-      dense
-      half-increments
-      readonly
-      size="14"
-    ></v-rating> -->
-
-    <!-- <span class="text-subtitle-1 font-weight-bold">
-      Avaliação dos usuários
-    </span> -->
-
     <v-chip-group class="d-flex align-center">
       <v-chip class="pa-1 ma-1" outlined color="amber">
         IMDb {{ movie.imdbRating }}
       </v-chip>
-      <!-- <v-progress-circular
-        rotate="-90"
-        color="primary lighten-3 ma-2"
-        :value="84"
-        size="40"
-        width="3"
-      >
-        <span class="text-subtitle-2">84%</span>
-      </v-progress-circular> -->
     </v-chip-group>
 
     <v-chip-group>
@@ -53,14 +34,14 @@
 </template>
 
 <script>
-import FavoriteIcon from './FavoriteIcon.vue';
+// import FavoriteIcon from './FavoriteIcon.vue';
 
 export default {
   props: {
     movie: Object,
   },
   components: {
-    FavoriteIcon,
+    // FavoriteIcon,
   },
   data() {
     return {
@@ -73,7 +54,13 @@ export default {
       },
     };
   },
+
   methods: {
+    toMovieDetails() {
+      this.$router.push({
+        path: `${this.$route.path}/movie/${this.movie.movieId}`,
+      });
+    },
     updFavorites() {
       this.isFavorite = !this.isFavorite;
     },
