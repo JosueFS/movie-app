@@ -1,7 +1,11 @@
 <template>
   <v-container class="pa-0">
     <v-img
-      max-height="550px"
+      :class="{
+        'ma-0': $vuetify.breakpoint.xs,
+        'ma-0': $vuetify.breakpoint.smAndUp,
+      }"
+      :max-height="$vuetify.breakpoint.xs ? '900px' : '540px'"
       v-if="!!movie.bg_url"
       :src="movie.bg_url"
       gradient="90deg, rgba(18,18,18,1) 10%, rgba(18,18,18,0.7) 50%"
@@ -9,7 +13,7 @@
       <v-row align="center" class="fill-height justify-center justify-sm-start">
         <v-col
           class="
-            pa-0
+            pa-1
             d-flex
             justify-center justify-sm-start
             flex-shrink-1 flex-grow-1 flex-sm-shrink-0 flex-sm-grow-0
@@ -20,11 +24,25 @@
           <v-card
             justify-self="center"
             class="ma-3"
-            color="grey"
-            min-width="300px"
-            max-width="420px"
+            color="secondary"
+            min-width="200px"
+            max-width="300px"
           >
-            <v-img height="450px" :src="movie.poster"></v-img>
+            <v-img
+              class="d-block d-sm-none rounded"
+              width="240px"
+              contain
+              position="center top"
+              :src="movie.poster"
+            ></v-img>
+            <v-img
+              contain
+              class="d-none d-sm-block rounded"
+              position="center top"
+              max-width="300px"
+              :src="movie.poster"
+            ></v-img>
+            <p class="caption text-center pa-0 ma-0">{{ formatedDate }}</p>
           </v-card>
         </v-col>
         <v-col
@@ -35,44 +53,23 @@
           <v-card color="rgba(0, 0, 0, 0)" flat dark>
             <v-card-text class="py-0">
               <p
-                class="white--text text-h6 font-weight-bold ml-4 py-0 multiline"
+                class="white--text text-h4 font-weight-bold ml-4 py-0 multiline"
               >
                 {{ movie.title }}
               </p>
             </v-card-text>
 
             <v-card-text class="white--text py-0">
-              <div class="px-2">
+              <div class="ml-1 px-2">
                 <div class="mx-1">
-                  <!-- <v-chip label outlined small color="white" class="ma-2 pa-1"
-                    >14</v-chip> -->
-
-                  <span>{{ movie.released }}</span>
-                  <span>{{ movie.runtime }}</span>
-                  <span v-for="genre in movie.in_genre" :key="genre._id">
-                    {{ genre.name }}
-                  </span>
+                  <v-chip tag outlined>{{ formatedTime }}</v-chip>
+                  <p class="body-2 mt-3">
+                    {{ movie.in_genre.map((g) => g.name).join(', ') }}
+                  </p>
                 </div>
-
-                <!-- <v-progress-circular
-                  rotate="-90"
-                  color="primary lighten-3 ma-2"
-                  :value="84"
-                  size="45"
-                  width="3"
-                >
-                  <span class="text-subtitle-2 font-weight-bold">84%</span>
-                </v-progress-circular>
-                <span class="text-subtitle-1 font-weight-bold">
-                  Avaliação dos usuários
-                </span> -->
-
-                <!-- <p class="font-italic pa-2">
-                  With your blade, bring an end to the nightmare.
-                </p> -->
               </div>
 
-              <v-list-item two-line>
+              <v-list-item two-line class="ml-0">
                 <v-list-item-content>
                   <v-list-item-title class="text-h5 mb-1 font-weight-bold">
                     Sinopse
@@ -82,29 +79,79 @@
                   </p>
                 </v-list-item-content>
               </v-list-item>
-
-              <!-- <v-list-item two-line>
-                <v-list-item-content>
-                  <v-list-item-title class="text-h5 mb-1 font-weight-bold">
-                    Haruo Sotozaki
-                  </v-list-item-title>
-                  <p>Diretor</p>
-                </v-list-item-content>
-              </v-list-item> -->
             </v-card-text>
 
             <v-card-actions
               class="btn-group py-0 justify-center justify-sm-start mb-4"
+              :class="{
+                'ma-0': $vuetify.breakpoint.xs,
+                'ma-6': $vuetify.breakpoint.smAndUp,
+              }"
             >
-              <v-btn> Avaliar Filme </v-btn>
-              <!-- 
-              <FavIcon
-                class="favorite-icon"
-                @click.native="updFavorites"
-                :isFavorite="isFavorite"
-              /> -->
+              <v-dialog
+                transition="dialog-bottom-transition"
+                max-width="400"
+                persistent
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    class="d-flex justify-space-around mr-2"
+                    small
+                  >
+                    <v-icon size="20">mdi-star-outline</v-icon>
+                    Rate
+                  </v-btn>
+                </template>
+                <template v-slot:default="dialog">
+                  <v-card>
+                    <v-toolbar color="primary" class="text-center" dark
+                      >Rate this Movie</v-toolbar
+                    >
+                    <v-card-text>
+                      <div class="text-subtitle-1 pa-1 text-center">
+                        Choose Rating
+                      </div>
+                    </v-card-text>
 
-              <v-btn>Favoritos</v-btn>
+                    <v-rating
+                      class="d-flex justify-center column"
+                      dense
+                      empty-icon="mdi-star-outline"
+                      full-icon="mdi-star"
+                      half-icon="mdi-star-half-full"
+                      half-increments
+                      hover
+                      length="5"
+                      size="32"
+                      :value="3"
+                      @click="dialog.value = false"
+                    ></v-rating>
+
+                    <v-card-actions class="justify-center">
+                      <v-btn text @click="dialog.value = false">Cancel</v-btn>
+                      <v-btn text @click="dialog.value = false">Ok</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </template>
+              </v-dialog>
+
+              <v-btn
+                small
+                @click="isSaved = !isSaved"
+                class="d-flex justify-space-around border-none"
+              >
+                <template v-if="isSaved">
+                  <v-icon size="20">mdi-playlist-minus </v-icon>
+                  Remove
+                </template>
+
+                <template v-else>
+                  <v-icon size="20">mdi-playlist-plus</v-icon>
+                  Save
+                </template>
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -115,19 +162,35 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 import MovieService from './../services/movie.service';
 
 export default {
   name: 'Movie',
   data: () => ({
     movie: {},
-    isFavorite: false,
+    isSaved: false,
   }),
+  computed: {
+    formatedDate() {
+      return moment(this.movie.released)
+        .format('DD/MM/YYYY')
+        .replaceAll('-', '/');
+    },
+    formatedTime() {
+      return moment()
+        .startOf('day')
+        .add(this.movie.runtime, 'minutes')
+        .format('h[h] mm[min]');
+    },
+  },
   async created() {
     const { id } = this.$route.params;
 
     this.movie = await MovieService.getMovieDetails({
       movieId: id,
+      userId: this.$store.state.user.id,
     });
   },
 };
