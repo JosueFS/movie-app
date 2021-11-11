@@ -1,15 +1,15 @@
 import Vue from 'vue';
-import Vuetify from 'vuetify';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 
+import App from '@/App.vue';
+import router from '@/router';
+import store from '@/store';
+
+import vuetify from '@/plugins/vuetify';
+
+import '@/plugins/vuelidate';
 import 'vuetify/dist/vuetify.min.css';
-
-import App from './App.vue';
-import router from './router';
-import store from './store';
-
-Vue.use(Vuetify);
 
 const requireComponent = require.context(
   './components',
@@ -30,7 +30,7 @@ requireComponent.keys().forEach((fileName) => {
 Vue.config.productionTip = false;
 
 new Vue({
-  vuetify: new Vuetify(),
+  vuetify,
   router,
   store,
   render: (h) => h(App),

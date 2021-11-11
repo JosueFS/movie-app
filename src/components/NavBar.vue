@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app>
+    <!-- <v-app-bar app>
       <router-link to="/" @click="clearQuery" class="brand">
         <v-toolbar-title class="title">MOVUE</v-toolbar-title>
         <span class="text-subtitle-2">Movie Reccomendations</span>
@@ -15,11 +15,11 @@
         background-color="#ddd"
         filled
         dense
-        v-show="$route.path === '/home'"
+        v-show="$route.path === ''"
       ></v-text-field>
 
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-xs-only" v-show="$route.path !== '/'">
+      <v-toolbar-items class="hidden-xs-only" v-show="$route.path !== ''">
         <router-link
           exact
           v-for="item in menu"
@@ -35,7 +35,7 @@
       <v-app-bar-nav-icon
         @click="drawer = true"
         class="hidden-sm-and-up"
-        v-show="$route.path !== '/'"
+        v-show="$route.path !== ''"
       ></v-app-bar-nav-icon>
     </v-app-bar>
 
@@ -54,7 +54,7 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
   </div>
 </template>
 
@@ -63,8 +63,8 @@ export default {
   data() {
     return {
       menu: [
-        { title: 'Home', name: 'home' },
-        { title: 'Favorites', name: 'favorites' },
+        { title: 'Home', name: '' },
+        { title: 'Favorites', name: '' },
       ],
       drawer: false,
       query: '',
@@ -73,25 +73,24 @@ export default {
   },
   watch: {
     //Prevent multiple request to API when typing a query string
-    query(value) {
-      clearInterval(this.timer);
-      this.$store.dispatch('handleSetQueryString', value);
-
-      this.timer = setTimeout(async () => {
-        this.$router
-          .push({
-            query: { ...this.$route.query, queryString: value, page: 1 },
-          })
-          .catch(() => {});
-        clearInterval(this.timer);
-      }, 1000);
-    },
+    // query(value) {
+    //   clearInterval(this.timer);
+    //   this.$store.dispatch('handleSetQueryString', value);
+    //   this.timer = setTimeout(async () => {
+    //     this.$router
+    //       .push({
+    //         query: { ...this.$route.query, queryString: value, page: 1 },
+    //       })
+    //       .catch(() => {});
+    //     clearInterval(this.timer);
+    //   }, 1000);
+    // },
   },
   methods: {
-    clearQuery() {
-      this.query = '';
-      this.$router.push({ query: {} }).catch(() => {});
-    },
+    // clearQuery() {
+    //   this.query = '';
+    //   this.$router.push({ query: {} }).catch(() => {});
+    // },
   },
 };
 </script>

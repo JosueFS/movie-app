@@ -1,21 +1,20 @@
-// import axios from 'axios';
+import axios from 'axios';
 
-// const api = axios.create({
-//   baseURL: 'https://api.punkapi.com/v2/',
-//   headers: {
-//     Accept: 'application/json',
-//     'Content-Type': 'application/json',
-//   },
-// });
+// const API_KEY = process.env.TMDB_API_KEY;
+const BASE_URL = 'https://api.themoviedb.org/3/';
 
-// export default {
-//   getBeerList({ queryString, page = 1, perPage = 9 }) {
-//     if (queryString) {
-//       return api.get(
-//         `/beers?beer_name=${queryString}&page=${page}&per_page=${perPage}`
-//       );
-//     } else {
-//       return api.get(`/beers?page=${page}&per_page=${perPage}`);
-//     }
-//   },
-// };
+const api = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+});
+
+export default {
+  getMovieImages(movieId) {
+    return api.get(
+      `/movie/${movieId}/images?api_key=61a2a020dd3de41e469bc09fc266744f`
+    );
+  },
+};

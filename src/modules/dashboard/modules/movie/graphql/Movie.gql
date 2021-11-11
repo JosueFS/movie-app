@@ -1,0 +1,28 @@
+query getMovieDetails($movieId: ID!) {
+  Movie(movieId: $movieId) {
+    tmdbId
+    poster
+    title
+    released
+    runtime
+    budget
+    languages
+    url
+    year
+    plot
+
+    in_genre(first: 4) {
+      _id
+      name
+    }
+
+    similarMovies {
+      movieId
+      title
+      year
+      imdbRating
+      tmdbId
+      poster
+    }
+  }
+}

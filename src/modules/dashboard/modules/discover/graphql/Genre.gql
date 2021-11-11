@@ -1,0 +1,35 @@
+# import * as _GenreOrdering from './GenreOrdering.gql'
+# import * as _GenreFilter from './GenreFilter.gql'
+
+query moviesByGenre(
+  $id: String
+  $name: String
+  $first: Int
+  $offset: Int
+  $orderBy: [_GenreOrdering]
+  $filter: _GenreFilter
+) {
+  Genre(
+    _id: $id
+    name: $name
+    first: $first
+    offset: $offset
+    orderBy: $orderBy
+    filter: $filter
+  ) {
+    _id
+    name
+    movies(first: $first, orderBy: budget_desc) {
+      movieId
+      imdbRating
+      title
+      year
+      poster
+
+      in_genre(first: 3) {
+        _id
+        name
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+enum _GenreOrdering {
+  name_asc
+  name_desc
+  _id_asc
+  _id_desc
+}

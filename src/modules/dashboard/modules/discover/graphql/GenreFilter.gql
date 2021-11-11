@@ -1,0 +1,23 @@
+type _GenreFilter {
+  AND: [_GenreFilter!]
+  OR: [_GenreFilter!]
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_regexp: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  movies: _MovieFilter
+  movies_not: _MovieFilter
+  movies_in: [_MovieFilter!]
+  movies_not_in: [_MovieFilter!]
+  movies_some: _MovieFilter
+  movies_none: _MovieFilter
+  movies_single: _MovieFilter
+  movies_every: _MovieFilter
+}
