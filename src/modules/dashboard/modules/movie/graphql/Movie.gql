@@ -1,4 +1,4 @@
-query getMovieDetails($movieId: ID!) {
+query getMovieDetails($movieId: ID!, $userId: ID) {
   Movie(movieId: $movieId) {
     tmdbId
     poster
@@ -24,5 +24,29 @@ query getMovieDetails($movieId: ID!) {
       tmdbId
       poster
     }
+
+    users_rated(filter: { userId: $userId }) {
+      _id
+      name
+    }
+  }
+}
+
+mutation {
+  AddMovieUsers_ratings(
+    from: { userId: "ee6946cf-a58b-4d11-a769-b23f07239395" }
+    to: { movieId: "111362" }
+    data: { rating: 5, timestamp: 1636667442 }
+  ) {
+    from {
+      name
+    }
+    to {
+      movieId
+      title
+    }
+
+    rating
+    timestamp
   }
 }
