@@ -52,12 +52,6 @@
             </v-btn>
           </v-card-text>
 
-          <v-card-actions class="justify-center">
-            <a @click="isLogin = !isLogin">
-              {{ texts.link }}
-            </a>
-          </v-card-actions>
-
           <v-snackbar
             v-model="showSnackbar"
             timeout="60000"
@@ -89,7 +83,7 @@ import { mapActions } from 'vuex';
 
 import { formatError } from '@/utils';
 
-import AuthService from './../services/auth.service';
+import AuthService from '@/modules/auth/services/auth.service';
 
 export default {
   name: 'Login',
@@ -113,17 +107,11 @@ export default {
   },
   computed: {
     texts() {
-      return this.isLogin
-        ? {
-            toolbar: 'Entrar',
-            button: 'Entrar',
-            link: 'Quero me cadastrar',
-          }
-        : {
-            toolbar: 'Cadastrar',
-            button: 'Criar conta',
-            link: 'Já tenho uma conta',
-          };
+      return {
+        toolbar: 'Update Profile',
+        button: 'Update',
+        link: 'Já tenho uma conta',
+      };
     },
     emailErrors() {
       const errors = [];
@@ -139,13 +127,11 @@ export default {
   methods: {
     async submit() {
       this.isLoading = true;
+
       try {
-        this.isLogin
-          ? await AuthService.login(this.user.email)
-          : await AuthService.signup(this.user.email);
+        await AuthService.update(this.user.email);
 
         this.setUser();
-        this.$router.push(this.$route.query.redirect || '/home');
       } catch (error) {
         console.log(error);
         this.error = formatError(error.message);
@@ -154,7 +140,10 @@ export default {
         this.isLoading = false;
       }
     },
-    ...mapActions(['setUser']),
+    ...mapActions(['setUser', 'setTitle']),
+  },
+  created() {
+    this.setTitle({ title: 'Profile' });
   },
 };
 </script>

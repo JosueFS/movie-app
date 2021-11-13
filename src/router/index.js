@@ -6,7 +6,7 @@ import { AUTH_CREDENTIALS } from '@/plugins/apollo';
 import AuthService from '@/modules/auth/services/auth.service';
 
 import authRoutes from '@/modules/auth/router';
-import dashboardRoutes from '@/modules/dashboard/router';
+import homeRoutes from '@/modules/home/router';
 
 Vue.use(VueRouter);
 
@@ -17,7 +17,7 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [...authRoutes, ...dashboardRoutes, { path: '', redirect: '/login' }],
+  routes: [...authRoutes, ...homeRoutes, { path: '', redirect: '/login' }],
 });
 
 router.beforeEach(async (to, from, next) => {
@@ -37,7 +37,7 @@ router.beforeEach(async (to, from, next) => {
       });
 
       return next({
-        path: '/dashboard',
+        path: '/home',
       });
     } catch (error) {
       console.log('Auto login error: ', error);

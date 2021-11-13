@@ -5,6 +5,5 @@ export default [
     path: 'discover',
     component: Discover,
     meta: { requiresAuth: true },
-    alias: [''],
   },
 ];

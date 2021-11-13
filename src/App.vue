@@ -14,6 +14,9 @@ export default {
   methods: {
     ...mapActions(['setUser']),
   },
+  created() {
+    this.setUser();
+  },
 };
 </script>
 

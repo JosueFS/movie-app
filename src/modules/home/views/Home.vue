@@ -8,7 +8,7 @@
 import Layout from '../components/Layout.vue';
 
 export default {
-  name: 'Dashboard',
+  name: 'Home',
   components: {
     Layout,
   },

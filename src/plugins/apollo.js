@@ -11,8 +11,16 @@ const resetApolloClient = async (apollo) => {
 };
 
 const onLogin = async (apollo, user) => {
-  if (typeof window.localStorage !== undefined && user.userId) {
+  if (typeof window.localStorage !== undefined) {
     window.localStorage.setItem(AUTH_CREDENTIALS, JSON.stringify(user));
+  }
+
+  await resetApolloClient(apollo);
+};
+
+const onLogout = async (apollo) => {
+  if (typeof window.localStorage !== undefined) {
+    window.localStorage.removeItem(AUTH_CREDENTIALS);
   }
 
   await resetApolloClient(apollo);
@@ -30,4 +38,4 @@ const apollo = new ApolloClient({
 
 export default apollo;
 
-export { AUTH_CREDENTIALS, onLogin };
+export { AUTH_CREDENTIALS, onLogin, onLogout };

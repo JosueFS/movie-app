@@ -1,4 +1,4 @@
-import apollo, { onLogin } from '@/plugins/apollo';
+import apollo, { onLogin, onLogout } from '@/plugins/apollo';
 
 import SignupMutation from './../graphql/Signup.gql';
 import UserQuery from './../graphql/User.gql';
@@ -12,8 +12,6 @@ const signup = async (email) => {
   });
 
   const { CreateUser } = response.data;
-
-  console.log(CreateUser);
 
   await onLogin(apollo, CreateUser);
 
@@ -30,11 +28,13 @@ const login = async (email) => {
 
   const [login] = response.data.User;
 
-  console.log(login);
-
   await onLogin(apollo, login);
 
   return login;
+};
+
+const logout = async () => {
+  await onLogout(apollo, {});
 };
 
 const getUser = async (email, options = {}) => {
@@ -51,6 +51,7 @@ const getUser = async (email, options = {}) => {
 
 export default {
   login,
+  logout,
   signup,
   getUser,
 };

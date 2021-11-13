@@ -15,7 +15,11 @@
         </v-list-item-action>
       </v-list-item>
 
-      <v-list-item tag="div" @click.stop="">
+      <v-list-item
+        tag="div"
+        to="/home/user"
+        @click.stop="$emit('input', false)"
+      >
         <v-list-item-action>
           <v-icon>mdi-account</v-icon>
         </v-list-item-action>
@@ -52,12 +56,24 @@
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
+      <v-list-item exact to="/login" @click.stop="handleLogout">
+        <v-list-item-action>
+          <v-icon>mdi-logout</v-icon>
+        </v-list-item-action>
+
+        <v-list-item-content>
+          <v-list-item-title>Logout</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+
+import AuthService from '@/modules/auth/services/auth.service';
 
 export default {
   name: 'Menu',
@@ -67,21 +83,21 @@ export default {
   data: () => ({
     items: [
       {
-        title: 'Recomendações',
+        title: 'Recommendations',
         icon: 'mdi-filmstrip',
-        url: '/dashboard',
+        url: '/home',
         exact: true,
       },
       {
-        title: 'Favoritos',
-        icon: 'mdi-heart',
-        url: '/dashboard/records/add?type=credit',
+        title: 'Discover',
+        icon: 'mdi-map',
+        url: '/home/discover',
         exact: true,
       },
       {
-        title: 'Avaliados',
+        title: 'Rated Movies',
         icon: 'mdi-star',
-        url: '/dashboard/records/add?type=debit',
+        url: '/home/rateds',
         exact: true,
       },
     ],
@@ -89,6 +105,13 @@ export default {
   }),
   computed: {
     ...mapState(['user']),
+  },
+  methods: {
+    async handleLogout() {
+      await AuthService.logout();
+
+      this.$emit('input', false);
+    },
   },
 };
 </script>

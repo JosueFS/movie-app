@@ -1,12 +1,10 @@
 <template>
   <v-card
-    class="event-card -shadow"
+    class="event-card -shadow white--text"
     :style="backgroundStyle"
     pointer
     @click="toMovieDetails"
   >
-    <!-- <FavoriteIcon @click.native="updFavorites" :isFavorite="isFavorite" /> -->
-
     <div>
       <h4 class="title ma-1">{{ movie.title }}</h4>
     </div>
@@ -19,6 +17,7 @@
 
     <v-chip-group>
       <v-chip
+        color="white"
         outlined
         v-for="genre in movie.in_genre"
         :key="`${movie.movieId}-${genre._id}`"
@@ -27,21 +26,16 @@
       </v-chip>
     </v-chip-group>
 
-    <v-footer color="transparent" class="card-footer">
+    <v-footer color="transparent" class="white--text">
       <strong>{{ movie.year }}</strong>
     </v-footer>
   </v-card>
 </template>
 
 <script>
-// import FavoriteIcon from './FavoriteIcon.vue';
-
 export default {
   props: {
     movie: Object,
-  },
-  components: {
-    // FavoriteIcon,
   },
   data() {
     return {
@@ -58,7 +52,7 @@ export default {
   methods: {
     toMovieDetails() {
       this.$router.push({
-        path: `${this.$route.path}/movie/${this.movie.movieId}`,
+        path: `/home/movie/${this.movie.movieId}`,
       });
     },
     updFavorites() {
@@ -90,22 +84,6 @@ export default {
   &:hover {
     box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2),
       0 1px 15px 0 rgba(0, 0, 0, 0.19);
-  }
-}
-
-.favorite-icon {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  top: 8px;
-  right: 8px;
-  background: transparent;
-  border: 0;
-  outline: 0;
-  border-radius: 50%;
-
-  &:hover {
-    background: #fee7f2;
   }
 }
 </style>

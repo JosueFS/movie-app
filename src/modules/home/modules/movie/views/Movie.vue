@@ -62,7 +62,7 @@
             <v-card-text class="white--text py-0">
               <div class="ml-1 px-2">
                 <div class="mx-1">
-                  <v-chip tag outlined>{{ formatedTime }}</v-chip>
+                  <v-chip tag outlined>{{ formatedReleasedDate }}</v-chip>
                   <p class="body-2 mt-3">
                     {{ movie.in_genre.map((g) => g.name).join(', ') }}
                   </p>
@@ -88,23 +88,21 @@
                 'ma-6': $vuetify.breakpoint.smAndUp,
               }"
             >
+              <v-btn
+                class="d-flex justify-space-around mr-2"
+                @click.stop="dialog = true"
+                small
+              >
+                <v-icon size="20">mdi-star-outline</v-icon>
+                Rate
+              </v-btn>
               <v-dialog
                 transition="dialog-bottom-transition"
                 max-width="400"
+                v-model="dialog"
                 persistent
               >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    v-bind="attrs"
-                    v-on="on"
-                    class="d-flex justify-space-around mr-2"
-                    small
-                  >
-                    <v-icon size="20">mdi-star-outline</v-icon>
-                    Rate
-                  </v-btn>
-                </template>
-                <template v-slot:default="dialog">
+                <template>
                   <v-card>
                     <v-toolbar color="primary" class="text-center" dark
                       >Rate this Movie</v-toolbar
@@ -116,7 +114,7 @@
                     </v-card-text>
 
                     <v-rating
-                      class="d-flex justify-center column"
+                      class="d-flex justify-center column mb-3"
                       dense
                       empty-icon="mdi-star-outline"
                       full-icon="mdi-star"
@@ -125,13 +123,18 @@
                       hover
                       length="5"
                       size="32"
-                      :value="3"
-                      @click="dialog.value = false"
+                      v-model="rating"
                     ></v-rating>
 
+                    <v-card-text class="pb-0">
+                      <div class="caption pa-1 text-center">
+                        {{ formatedRatedAtDate }}
+                      </div>
+                    </v-card-text>
+
                     <v-card-actions class="justify-center">
-                      <v-btn text @click="dialog.value = false">Cancel</v-btn>
-                      <v-btn text @click="dialog.value = false">Ok</v-btn>
+                      <v-btn text @click="handleGiveUpRate">Cancel</v-btn>
+                      <v-btn text @click="handleRateMovie">Ok</v-btn>
                     </v-card-actions>
                   </v-card>
                 </template>
@@ -158,6 +161,8 @@
         <div class="related"></div>
       </v-row>
     </v-img>
+
+    <MovieList :movieList="movie.similarMovies" />
   </v-container>
 </template>
 
@@ -166,10 +171,18 @@ import moment from 'moment';
 
 import MovieService from './../services/movie.service';
 
+import MovieList from '@/modules/home/components/MovieList.vue';
+
 export default {
   name: 'Movie',
+  components: {
+    MovieList,
+  },
   data: () => ({
     movie: {},
+    formatedRatedAtDate: '',
+    rating: 0,
+    dialog: false,
     isSaved: false,
   }),
   computed: {
@@ -178,11 +191,53 @@ export default {
         .format('DD/MM/YYYY')
         .replaceAll('-', '/');
     },
-    formatedTime() {
+    formatedReleasedDate() {
       return moment()
         .startOf('day')
         .add(this.movie.runtime, 'minutes')
         .format('h[h] mm[min]');
+    },
+    // formatedRatedAtDate() {
+    //   const date =
+    //     moment
+    //       .unix(this.movie.users_ratings[0]?.timestamp)
+    //       .format('DD/MM/YYYY HH:mm:ss') || '';
+
+    //   return date === 'Invalid date' ? '' : date;
+    // },
+  },
+  methods: {
+    async handleRateMovie() {
+      const ratings = await MovieService.rateMovie({
+        userId: this.$store.state.user.userId,
+        movieId: this.movie.movieId,
+        rating: this.rating,
+        timestamp: moment().unix(),
+      });
+
+      this.movie.users_ratings[0] = {
+        ...this.movie.users_ratings[0],
+        ...ratings,
+      };
+
+      this.updateRatedAt();
+
+      this.dialog = false;
+    },
+    updateRatedAt() {
+      let date = moment
+        .unix(this.movie.users_ratings[0]?.timestamp)
+        .format('DD/MM/YYYY HH:mm:ss');
+
+      date = date === 'Invalid date' ? '' : date;
+
+      this.formatedRatedAtDate = date;
+
+      this.rating = this.movie.users_ratings[0]?.rating;
+    },
+    handleGiveUpRate() {
+      this.dialog = false;
+      this.rating = this.movie.users_ratings[0]?.rating || 0;
     },
   },
   async created() {
@@ -190,8 +245,10 @@ export default {
 
     this.movie = await MovieService.getMovieDetails({
       movieId: id,
-      userId: this.$store.state.user.id,
+      userId: this.$store.state.user.userId,
     });
+
+    this.updateRatedAt();
   },
 };
 </script>
@@ -200,6 +257,7 @@ export default {
 .v-progress-circular {
   margin: 0.5rem;
 }
+
 div.v-list-item__title.text-h6.font-weight-bold.pl-8.multiline,
 .multiline {
   overflow: visible;
@@ -207,12 +265,10 @@ div.v-list-item__title.text-h6.font-weight-bold.pl-8.multiline,
 }
 
 .favorite-icon {
-  /* position: absolute; */
   width: 50px;
   height: 50px;
   top: 8px;
   right: 8px;
-  /* background: red; */
   border: 0;
   outline: 0;
   border-radius: 50%;
