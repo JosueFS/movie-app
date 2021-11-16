@@ -1,6 +1,6 @@
-# Beer Store
+# Movue App
 
-_Beer is much better than a lot of people_ 🍻
+App para recomendação de filmes de acordo com os filmes avaliados
 
 ## Project setup
 
