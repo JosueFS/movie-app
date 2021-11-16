@@ -167,7 +167,6 @@
 </template>
 
 <script>
-//FIXME: SIMILAR MOVIES NOT SHOWING !!!!
 import moment from 'moment';
 
 import MovieService from './../services/movie.service';
@@ -198,14 +197,6 @@ export default {
         .add(this.movie.runtime, 'minutes')
         .format('h[h] mm[min]');
     },
-    // formatedRatedAtDate() {
-    //   const date =
-    //     moment
-    //       .unix(this.movie.users_ratings[0]?.timestamp)
-    //       .format('DD/MM/YYYY HH:mm:ss') || '';
-
-    //   return date === 'Invalid date' ? '' : date;
-    // },
   },
   methods: {
     async handleRateMovie() {

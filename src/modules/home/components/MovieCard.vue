@@ -8,7 +8,7 @@
     >
       <div>
         <v-rating
-          v-if="movie.users_ratings.length"
+          v-if="movie.users_ratings && movie.users_ratings.length"
           full-icon="mdi-star"
           half-icon="mdi-star-half-full"
           background-color="orange lighten-3"
