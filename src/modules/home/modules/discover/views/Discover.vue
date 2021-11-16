@@ -1,5 +1,9 @@
 <template>
-  <GroupMovieList :groupMovieList="genres" />
+  <GroupMovieList
+    :groupMovieList="genres"
+    listTitleKey="name"
+    movieListKey="movies"
+  />
 </template>
 
 <script>
@@ -18,8 +22,10 @@ export default {
     genres: [],
   }),
   async created() {
-    this.genres = await DiscoverService.getMoviesByGenre();
-    this.setTitle({ title: 'Descubra novos filmes' });
+    this.genres = await DiscoverService.getMoviesByGenre({
+      userId: this.$store.state.user.userId,
+    });
+    this.setTitle({ title: 'Discover new Movies' });
   },
   methods: {
     ...mapActions(['setTitle']),

@@ -162,7 +162,7 @@
       </v-row>
     </v-img>
 
-    <MovieList :movieList="movie.similarMovies" />
+    <MovieList :movieList="movie.similarMovies" listTitle="Similar Movies" />
   </v-container>
 </template>
 

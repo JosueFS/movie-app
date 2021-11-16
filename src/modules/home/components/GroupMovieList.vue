@@ -1,14 +1,15 @@
 <template>
   <v-row>
-    <template v-for="genre in genres">
-      <v-col :key="genre._id" cols="12" class="text-h4 font-weight-bold">{{
-        genre.name
-      }}</v-col>
+    <template v-for="group in groupMovieList">
+      <v-col :key="group._id" cols="12" class="text-h4 font-weight-bold"
+        >{{ movieListKey === 'similarMovies' ? 'Because you rated' : '' }}
+        {{ group[listTitleKey] }}</v-col
+      >
 
       <template>
         <v-col
-          v-for="movie in genre.movies"
-          :key="`${genre._id}-${movie.movieId}`"
+          v-for="movie in group[movieListKey]"
+          :key="`${group._id}-${movie.movieId}`"
           cols="12"
           sm="4"
           lg="3"
@@ -22,29 +23,17 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-
 import MovieCard from '@/modules/home/components/MovieCard.vue';
 
-import DiscoverService from '@/modules/home/modules/discover/services/discover.service';
-
 export default {
-  name: 'Discover',
+  name: 'GroupMovieList',
   components: {
     MovieCard,
   },
-  data: () => ({
-    genres: [],
-  }),
-  computed: mapState({
-    // favorites: (state) => state.favoriteModule.favorites,
-  }),
-  async created() {
-    this.genres = await DiscoverService.getMoviesByGenre();
-    this.setTitle({ title: 'Descubra novos filmes' });
-  },
-  methods: {
-    ...mapActions(['setTitle']),
+  props: {
+    groupMovieList: Array,
+    movieListKey: String,
+    listTitleKey: String,
   },
 };
 </script>

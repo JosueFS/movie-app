@@ -97,7 +97,7 @@ export default {
       {
         title: 'Rated Movies',
         icon: 'mdi-star',
-        url: '/home/rateds',
+        url: '/home/rated',
         exact: true,
       },
     ],

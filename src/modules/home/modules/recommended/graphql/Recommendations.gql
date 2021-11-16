@@ -1,0 +1,33 @@
+query RecommendedMovies($userId: ID!) {
+  User(userId: $userId) {
+    RATED_rel(filter: { rating_gt: 3 }) {
+      rating
+      Movie {
+        title
+
+        similarMovies {
+          movieId
+          title
+          year
+          imdbRating
+          tmdbId
+          poster
+
+          in_genre(first: 3) {
+            _id
+            name
+          }
+
+          users_ratings(filter: { User: { userId: $userId } }) {
+            rating
+            timestamp
+            User {
+              userId
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}

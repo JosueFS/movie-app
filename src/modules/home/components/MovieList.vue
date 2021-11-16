@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="12" class="text-h4 font-weight-bold">Similar Movies</v-col>
+    <v-col cols="12" class="text-h4 font-weight-bold">{{ listTitle }}</v-col>
 
     <template>
       <v-col
@@ -23,6 +23,7 @@ import MovieCard from './MovieCard.vue';
 export default {
   name: 'MovieList',
   props: {
+    listTitle: String,
     movieList: Array,
   },
   components: {

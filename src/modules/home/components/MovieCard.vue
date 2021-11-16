@@ -1,35 +1,58 @@
 <template>
-  <v-card
-    class="event-card -shadow white--text"
-    :style="backgroundStyle"
-    pointer
-    @click="toMovieDetails"
-  >
-    <div>
-      <h4 class="title ma-1">{{ movie.title }}</h4>
-    </div>
+  <v-hover>
+    <v-card
+      class="event-card white--text"
+      :style="backgroundStyle"
+      pointer
+      @click="navigateToMovieDetails"
+    >
+      <div>
+        <v-rating
+          v-if="movie.users_ratings.length"
+          full-icon="mdi-star"
+          half-icon="mdi-star-half-full"
+          background-color="orange lighten-3"
+          color="orange"
+          half-increments
+          readonly
+          length="5"
+          size="24"
+          :value="movie.users_ratings[0].rating"
+        ></v-rating>
+      </div>
 
-    <v-chip-group class="d-flex align-center">
-      <v-chip class="pa-1 ma-1" outlined color="amber">
-        IMDb {{ movie.imdbRating }}
-      </v-chip>
-    </v-chip-group>
+      <div>
+        <div>
+          <h4 class="title ma-1">{{ movie.title }}</h4>
+        </div>
 
-    <v-chip-group>
-      <v-chip
-        color="white"
-        outlined
-        v-for="genre in movie.in_genre"
-        :key="`${movie.movieId}-${genre._id}`"
-      >
-        {{ genre.name }}
-      </v-chip>
-    </v-chip-group>
+        <!-- <v-chip-group>
+        <v-chip
+          color="white"
+          outlined
+          v-for="genre in movie.in_genre"
+          :key="`${movie.movieId}-${genre._id}`"
+        >
+          {{ genre.name }}
+        </v-chip>
+      </v-chip-group> -->
 
-    <v-footer color="transparent" class="white--text">
-      <strong>{{ movie.year }}</strong>
-    </v-footer>
-  </v-card>
+        <v-chip-group class="d-flex align-center">
+          <v-chip v-if="movie.imdbRating" outlined color="amber">
+            IMDb {{ movie.imdbRating }}
+          </v-chip>
+
+          <!-- <v-chip outlined color="#FF1744">
+            User {{ movie.imdbRating }}
+          </v-chip> -->
+        </v-chip-group>
+
+        <v-footer color="transparent" class="white--text justify-center">
+          <strong>{{ movie.year }}</strong>
+        </v-footer>
+      </div>
+    </v-card>
+  </v-hover>
 </template>
 
 <script>
@@ -50,13 +73,10 @@ export default {
   },
 
   methods: {
-    toMovieDetails() {
+    navigateToMovieDetails() {
       this.$router.push({
         path: `/home/movie/${this.movie.movieId}`,
       });
-    },
-    updFavorites() {
-      this.isFavorite = !this.isFavorite;
     },
   },
 };
@@ -67,7 +87,7 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   min-height: 400px;
   border-radius: 4px;
@@ -82,8 +102,8 @@ export default {
   }
 
   &:hover {
-    box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2),
-      0 1px 15px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 3px 12px 0 rgba(119, 0, 255, 0.3),
+      0 1px 15px 0 rgba(119, 0, 255, 0.19) !important;
   }
 }
 </style>

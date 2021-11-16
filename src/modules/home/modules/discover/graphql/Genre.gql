@@ -8,6 +8,7 @@ query moviesByGenre(
   $offset: Int
   $orderBy: [_GenreOrdering]
   $filter: _GenreFilter
+  $userId: ID!
 ) {
   Genre(
     _id: $id
@@ -29,6 +30,15 @@ query moviesByGenre(
       in_genre(first: 3) {
         _id
         name
+      }
+
+      users_ratings(filter: { User: { userId: $userId } }) {
+        rating
+        timestamp
+        User {
+          userId
+          name
+        }
       }
     }
   }
