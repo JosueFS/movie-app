@@ -167,6 +167,7 @@
 </template>
 
 <script>
+//FIXME: SIMILAR MOVIES NOT SHOWING !!!!
 import moment from 'moment';
 
 import MovieService from './../services/movie.service';

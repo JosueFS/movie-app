@@ -7,6 +7,10 @@
 </template>
 
 <script>
+/*
+  TODO: WHEN USER RATE A MOVIE, 
+  RECOMMENDED PAGE AND RATED PAGE NEEDS REFRESH TO UPDATE ITENS 
+*/
 import { mapActions } from 'vuex';
 
 export default {

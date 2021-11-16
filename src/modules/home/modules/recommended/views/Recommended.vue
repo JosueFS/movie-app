@@ -10,6 +10,7 @@
 </template>
 
 <script>
+//TODO: ADD Tips to see Discover Page when not have movies to recommend
 import RecommendationService from './../services/recommended.service';
 
 import GroupMovieList from '@/modules/home/components/GroupMovieList.vue';
