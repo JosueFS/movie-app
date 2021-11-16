@@ -9,7 +9,7 @@
       <template>
         <v-col
           v-for="movie in group[movieListKey]"
-          :key="`${group._id}-${movie.movieId}`"
+          :key="`${group[listTitleKey]}-${movie.movieId}`"
           cols="12"
           sm="4"
           lg="3"
