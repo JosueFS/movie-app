@@ -12,11 +12,8 @@ const getRecommendedMovies = async (variables) => {
   });
 
   const ratedList = response.data.User[0].RATED_rel;
-  console.log(ratedList);
 
   const finalRatedList = ratedList.map((list) => list.Movie);
-
-  console.log(finalRatedList);
 
   return finalRatedList;
 };

@@ -14,8 +14,6 @@ const getRatedMovies = async (variables) => {
     (movieArray) => movieArray.Movie
   );
 
-  console.log(ratedMovies);
-
   return ratedMovies;
 };
 

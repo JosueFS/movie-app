@@ -21,8 +21,6 @@ export default {
     this.movies = await RatedService.getRatedMovies({
       userId: this.$store.state.user.userId,
     });
-
-    console.log(this.movies);
   },
 };
 </script>

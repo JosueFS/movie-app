@@ -27,8 +27,6 @@ export default {
     this.movies = await RecommendationService.getRecommendedMovies({
       userId: this.$store.state.user.userId,
     });
-
-    console.log(this.movies);
   },
 };
 </script>
